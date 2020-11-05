@@ -24,7 +24,7 @@ ui <- fluidPage(
                         "Number of Awards:",
                         min = 1,
                         max = 20,
-                        value = 5),
+                        value = 1),
             textInput("students",
                         "comma separated list of students")
         ),
@@ -40,8 +40,12 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$winners <- renderText({
-        student_list <- unlist(strsplit(input$students,","))
-        sample(student_list, input$awards)
+        if (input$students != "" & is.character(input$students)) {
+              student_list <- unlist(strsplit(input$students,","))
+              paste(sample(student_list, input$awards), collapse = ", ")
+        } else {
+               print("Enter a comma separated list of Names")
+        }
     })
 }
 
